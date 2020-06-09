@@ -4,7 +4,7 @@ import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
 from keras.utils.generic_utils import CustomObjectScope
 
-from networks.resfcn256_6 import resfcn256_6
+from Networks.resfcn256_6 import resfcn256_6
 
 from Networks import mobilenet_v2
 

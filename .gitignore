@@ -1,3 +1,11 @@
 .idea
 icp/
 face3d/
+*.h5
+*.dat
+*.jpg
+*.PNG
+*.png
+*.jpeg
+*.obj
+*__pycache__*

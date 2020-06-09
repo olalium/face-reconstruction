@@ -1,5 +1,11 @@
-icp
-face3d
+get shape predictor for keypoints = http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2, probably don't need it.
+get trained_fg_then_real.h5 from drive = https://drive.google.com/file/d/1VJkvxDNIoLUOK1eQ9jZHyu_Xi68xYCSV/view?usp=sharing
 
-....
-
+09.06.2020, this worked with a GTX 1070:
+conda create --name face-recon python=3.6
+conda activate face-recon
+conda install -c anaconda scipy
+conda install -c anaconda scikit-image
+conda install -c conda-forge dlib
+conda install -c conda-forge opencv
+conda install -c anaconda keras-gpu

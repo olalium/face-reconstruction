@@ -6,9 +6,9 @@ from os import path
 import face3d
 import numpy as np
 import skimage.transform
-from face3d.morphable_model import MorphabelModel
-from facegen_to_posmap import generate_posmap_facegen_bfm
-from pos_map_code import process_uv, run_posmap_300W_LP
+from face3d.face3d.morphable_model import MorphabelModel
+from Dataset.dataset_generator.facegen_to_posmap import generate_posmap_facegen_bfm
+from Dataset.dataset_generator.pos_map_code import process_uv, run_posmap_300W_LP
 from skimage import io
 
 from Dataset.dataset_reader.DatasetReader import DatasetReader

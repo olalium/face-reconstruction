@@ -66,9 +66,9 @@ def get_cropping_transformation(image, face_detector, shape_predictor):
 
     d = detected_faces[
         0].rect  ## only use the first detected face (assume that each input image only contains one face)
-    left = d.left();
-    right = d.right();
-    top = d.top();
+    left = d.left()
+    right = d.right()
+    top = d.top()
     bottom = d.bottom()
     old_size = (right - left + bottom - top) / 2
     center = np.array([right - (right - left) / 2.0, bottom - (bottom - top) / 2.0 + old_size * 0.14])
@@ -108,9 +108,9 @@ def main():
     model_path = 'Data/net-data/trained_fg_then_real.h5'  # trained_fg_then_real.h5'
     face_detector_path = 'Data/net-data/mmod_human_face_detector.dat'
     shape_predictor_path = 'Data/net-data/shape_predictor_68_face_landmarks.dat'
-    # image_folder = 'test_images/'
-    image_folder = 'Data/florence_objs_with_img'
-    img_type = '.PNG'  # .png #
+    image_folder = 'test_images/'
+    # image_folder = 'Data/florence_objs_with_img'
+    img_type = '.jpg'  # .png #
 
     triangles = np.loadtxt('Data/uv-data/triangles.txt').astype(np.int32)
     face_ind = np.loadtxt('Data/uv-data/face_ind.txt').astype(np.int32)
@@ -132,13 +132,13 @@ def main():
             continue
         front_img = os.path.join(image_folder, face_folder,
                                  'front' + img_type)  # 'front.jpg')#face_folder + '_front.png')
-        side_img = os.path.join(image_folder, face_folder, 'left' + img_type)  # 'side.jpg')#face_folder + '_left.png')
+        side_img = os.path.join(image_folder, face_folder, 'side' + img_type)  # 'side.jpg')#face_folder + '_left.png')
         face_imgs.append([front_img, side_img])
 
     for images in face_imgs:
         print(images)
-        front_img = imread(images[0], mode='RGB')[:, :, :3]
-        side_img = imread(images[1], mode='RGB')[:, :, :3]
+        front_img = imread(images[0])[:, :, :3]
+        side_img = imread(images[1])[:, :, :3]
         if front_img.shape != (256, 256, 3):
             max_size = max(front_img.shape[0], front_img.shape[1])
             if max_size > 1000:
