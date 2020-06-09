@@ -1,10 +1,12 @@
-import numpy as np
-import os
 import glob
+import os
+
+import numpy as np
 from PRNetTwoFace.dataset_reader.Face import Face
 
+
 class DatasetReader(object):
-    def __init__(self, dataset_path, dataset_name = "300w-lp"):
+    def __init__(self, dataset_path, dataset_name="300w-lp"):
         self.dataset_name = dataset_name
         self.dataset_path = dataset_path
         self.faces = []
@@ -17,7 +19,7 @@ class DatasetReader(object):
 
         if self.dataset_name == '300w-lp':
             for sub_dataset in os.listdir(self.dataset_path):
-                print('fetching faces from dataset: %s'%(sub_dataset))
+                print('fetching faces from dataset: %s' % (sub_dataset))
                 if ('IBUG' in sub_dataset):
                     self.add_IBUG_faces(sub_dataset)
                 elif ('AFW' in sub_dataset):
@@ -29,7 +31,7 @@ class DatasetReader(object):
                 else:
                     continue
             self.has_read = True
-        
+
         elif self.dataset_name == 'facegen':
             self.add_facegen_faces()
             self.has_read = True
@@ -38,10 +40,10 @@ class DatasetReader(object):
             return None
 
         return self.faces
-    
+
     def print_statistics(self):
         face_list = self.getFacesFromDataset()
-        print('number of faces: %d'%(len(face_list)))
+        print('number of faces: %d' % (len(face_list)))
         distribution_of_face_poses = np.zeros(20)
         distribution_of_face_initial_poses = np.zeros(20)
         for face in face_list:
@@ -53,11 +55,11 @@ class DatasetReader(object):
         print('facepose| faces')
         print('-----------------')
         for u, i in enumerate(distribution_of_face_poses):
-            print('%d\t|\t%d'%(u, i))
+            print('%d\t|\t%d' % (u, i))
         print('\ninitial\nfacepose| faces')
         print('-----------------')
         for u, i in enumerate(distribution_of_face_initial_poses):
-            print('%d\t|\t%d'%(u*5, i))
+            print('%d\t|\t%d' % (u * 5, i))
 
     def add_IBUG_faces(self, sub_dataset):
         img_paths = os.path.join(self.dataset_path, sub_dataset, '*.jpg')
@@ -69,7 +71,7 @@ class DatasetReader(object):
             elif len(split_path) == 5:
                 face_number = str(split_path[2]) + '_' + str(split_path[3])
             self.populate_face_dict(img_path, face_number, sub_dataset)
-    
+
     def add_AFW_faces(self, sub_dataset):
         img_paths = os.path.join(self.dataset_path, sub_dataset, '*.jpg')
         img_list = glob.glob(img_paths)
@@ -93,17 +95,17 @@ class DatasetReader(object):
             split_path = img_path.split('/')[-1].split('_')
             face_number = str(split_path[1]) + '_' + str(split_path[2])
             self.populate_face_dict(img_path, face_number, sub_dataset)
-    
+
     def add_facegen_faces(self):
         for face_folder in os.listdir(self.dataset_path):
             img_path_front = os.path.join(self.dataset_path, face_folder, face_folder + '_front.png')
             img_path_left = os.path.join(self.dataset_path, face_folder, face_folder + '_left.png')
             img_path_right = os.path.join(self.dataset_path, face_folder, face_folder + '_right.png')
-            self.populate_face_dict(img_path_front, face_folder, '', get_pose = False)
-            self.populate_face_dict(img_path_left, face_folder, '', get_pose = False)
-            self.populate_face_dict(img_path_right, face_folder, '', get_pose = False)
-        
-    def populate_face_dict(self, img_path, face_number, sub_dataset, get_pose=True, pose = 0):
+            self.populate_face_dict(img_path_front, face_folder, '', get_pose=False)
+            self.populate_face_dict(img_path_left, face_folder, '', get_pose=False)
+            self.populate_face_dict(img_path_right, face_folder, '', get_pose=False)
+
+    def populate_face_dict(self, img_path, face_number, sub_dataset, get_pose=True, pose=0):
         face_id = face_number + '_' + sub_dataset.strip('/')
         if face_id in self.face_dict.keys():
             self.face_dict[face_id].add_face_pose(img_path, get_pose, pose)

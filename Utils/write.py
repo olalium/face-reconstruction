@@ -1,6 +1,8 @@
+import os
+
 import numpy as np
 from skimage.io import imsave
-import os
+
 
 def write_asc(path, vertices):
     '''
@@ -22,18 +24,19 @@ def write_obj_with_colors(obj_name, vertices, triangles, colors):
         triangles: shape = (ntri, 3)
     '''
     triangles = triangles.copy()
-    triangles += 1 # meshlab start with 1
-    
+    triangles += 1  # meshlab start with 1
+
     if obj_name.split('.')[-1] != 'obj':
         obj_name = obj_name + '.obj'
-        
+
     # write obj
     with open(obj_name, 'w') as f:
-        
+
         # write vertices & colors
         for i in range(vertices.shape[0]):
             # s = 'v {} {} {} \n'.format(vertices[0,i], vertices[1,i], vertices[2,i])
-            s = 'v {} {} {} {} {} {}\n'.format(vertices[i, 0], vertices[i, 1], vertices[i, 2], colors[i, 0], colors[i, 1], colors[i, 2])
+            s = 'v {} {} {} {} {} {}\n'.format(vertices[i, 0], vertices[i, 1], vertices[i, 2], colors[i, 0],
+                                               colors[i, 1], colors[i, 2])
             f.write(s)
 
         # write f: ver ind/ uv ind
@@ -58,10 +61,10 @@ def write_obj_with_texture(obj_name, vertices, triangles, texture, uv_coords):
         obj_name = obj_name + '.obj'
     mtl_name = obj_name.replace('.obj', '.mtl')
     texture_name = obj_name.replace('.obj', '_texture.png')
-    
+
     triangles = triangles.copy()
-    triangles += 1 # mesh lab start with 1
-    
+    triangles += 1  # mesh lab start with 1
+
     # write obj
     with open(obj_name, 'w') as f:
         # first line: write mtlib(material library)
@@ -72,10 +75,10 @@ def write_obj_with_texture(obj_name, vertices, triangles, texture, uv_coords):
         for i in range(vertices.shape[0]):
             s = 'v {} {} {}\n'.format(vertices[i, 0], vertices[i, 1], vertices[i, 2])
             f.write(s)
-        
+
         # write uv coords
         for i in range(uv_coords.shape[0]):
-            s = 'vt {} {}\n'.format(uv_coords[i,0], 1 - uv_coords[i,1])
+            s = 'vt {} {}\n'.format(uv_coords[i, 0], 1 - uv_coords[i, 1])
             f.write(s)
 
         f.write("usemtl FaceTexture\n")
@@ -83,13 +86,14 @@ def write_obj_with_texture(obj_name, vertices, triangles, texture, uv_coords):
         # write f: ver ind/ uv ind
         for i in range(triangles.shape[0]):
             # s = 'f {}/{} {}/{} {}/{}\n'.format(triangles[i,0], triangles[i,0], triangles[i,1], triangles[i,1], triangles[i,2], triangles[i,2])
-            s = 'f {}/{} {}/{} {}/{}\n'.format(triangles[i,2], triangles[i,2], triangles[i,1], triangles[i,1], triangles[i,0], triangles[i,0])
+            s = 'f {}/{} {}/{} {}/{}\n'.format(triangles[i, 2], triangles[i, 2], triangles[i, 1], triangles[i, 1],
+                                               triangles[i, 0], triangles[i, 0])
             f.write(s)
 
     # write mtl
     with open(mtl_name, 'w') as f:
         f.write("newmtl FaceTexture\n")
-        s = 'map_Kd {}\n'.format(os.path.abspath(texture_name)) # map to image
+        s = 'map_Kd {}\n'.format(os.path.abspath(texture_name))  # map to image
         f.write(s)
 
     # write texture as png
@@ -111,10 +115,10 @@ def write_obj_with_colors_texture(obj_name, vertices, colors, triangles, texture
         obj_name = obj_name + '.obj'
     mtl_name = obj_name.replace('.obj', '.mtl')
     texture_name = obj_name.replace('.obj', '_texture.png')
-    
+
     triangles = triangles.copy()
-    triangles += 1 # mesh lab start with 1
-    
+    triangles += 1  # mesh lab start with 1
+
     # write obj
     with open(obj_name, 'w') as f:
         # first line: write mtlib(material library)
@@ -123,12 +127,13 @@ def write_obj_with_colors_texture(obj_name, vertices, colors, triangles, texture
 
         # write vertices
         for i in range(vertices.shape[0]):
-            s = 'v {} {} {} {} {} {}\n'.format(vertices[i, 0], vertices[i, 1], vertices[i, 2], colors[i, 0], colors[i, 1], colors[i, 2])
+            s = 'v {} {} {} {} {} {}\n'.format(vertices[i, 0], vertices[i, 1], vertices[i, 2], colors[i, 0],
+                                               colors[i, 1], colors[i, 2])
             f.write(s)
-        
+
         # write uv coords
         for i in range(uv_coords.shape[0]):
-            s = 'vt {} {}\n'.format(uv_coords[i,0], 1 - uv_coords[i,1])
+            s = 'vt {} {}\n'.format(uv_coords[i, 0], 1 - uv_coords[i, 1])
             f.write(s)
 
         f.write("usemtl FaceTexture\n")
@@ -136,13 +141,14 @@ def write_obj_with_colors_texture(obj_name, vertices, colors, triangles, texture
         # write f: ver ind/ uv ind
         for i in range(triangles.shape[0]):
             # s = 'f {}/{} {}/{} {}/{}\n'.format(triangles[i,0], triangles[i,0], triangles[i,1], triangles[i,1], triangles[i,2], triangles[i,2])
-            s = 'f {}/{} {}/{} {}/{}\n'.format(triangles[i,2], triangles[i,2], triangles[i,1], triangles[i,1], triangles[i,0], triangles[i,0])
+            s = 'f {}/{} {}/{} {}/{}\n'.format(triangles[i, 2], triangles[i, 2], triangles[i, 1], triangles[i, 1],
+                                               triangles[i, 0], triangles[i, 0])
             f.write(s)
 
     # write mtl
     with open(mtl_name, 'w') as f:
         f.write("newmtl FaceTexture\n")
-        s = 'map_Kd {}\n'.format(os.path.abspath(texture_name)) # map to image
+        s = 'map_Kd {}\n'.format(os.path.abspath(texture_name))  # map to image
         f.write(s)
 
     # write texture as png

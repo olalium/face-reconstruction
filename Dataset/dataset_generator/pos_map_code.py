@@ -1,19 +1,17 @@
-import cv2
+import sys
+
 import numpy as np
 import scipy.io as sio
-from skimage import io
 import skimage.transform
-import matplotlib.pyplot as plt
+from skimage import io
 
-import sys
 sys.path.append('../../face3d')
-import face3d
 from face3d import mesh
-from face3d.morphable_model import MorphabelModel
 
 '''
 Code based on the original implementation https://github.com/YadiraF/PRNet
 '''
+
 
 def process_uv(uv_coords, uv_h=256, uv_w=256):
     uv_coords[:, 0] = uv_coords[:, 0] * (uv_w - 1)
@@ -21,6 +19,7 @@ def process_uv(uv_coords, uv_h=256, uv_w=256):
     uv_coords[:, 1] = uv_h - uv_coords[:, 1] - 1
     uv_coords = np.hstack((uv_coords, np.zeros((uv_coords.shape[0], 1))))  # add z
     return uv_coords
+
 
 def run_posmap_300W_LP(bfm, uv_coords, image_path, mat_path, save_folder, uv_h=256, uv_w=256, image_h=256, image_w=256):
     # load image and fitted parameters
@@ -43,7 +42,7 @@ def run_posmap_300W_LP(bfm, uv_coords, image_path, mat_path, save_folder, uv_h=2
     projected_vertices = transformed_vertices.copy()  # using stantard camera & orth projection as in 3DDFA
     image_vertices = projected_vertices.copy()
     image_vertices[:, 1] = h - image_vertices[:, 1] - 1
-    
+
     # crop image with key points
     kpt = image_vertices[bfm.kpt_ind, :].astype(np.int32)
     left = np.min(kpt[:, 0])
@@ -65,7 +64,8 @@ def run_posmap_300W_LP(bfm, uv_coords, image_path, mat_path, save_folder, uv_h=2
 
     # crop and record the transform parameters
     src_pts = np.array([[center[0] - size / 2, center[1] - size / 2], [center[0] - size / 2,
-                                                                       center[1] + size / 2], [center[0] + size / 2, center[1] - size / 2]])
+                                                                       center[1] + size / 2],
+                        [center[0] + size / 2, center[1] - size / 2]])
     DST_PTS = np.array([[0, 0], [0, image_h - 1], [image_w - 1, 0]])
     tform = skimage.transform.estimate_transform('similarity', src_pts, DST_PTS)
     cropped_image = skimage.transform.warp(image, tform.inverse, output_shape=(image_h, image_w))
@@ -80,7 +80,7 @@ def run_posmap_300W_LP(bfm, uv_coords, image_path, mat_path, save_folder, uv_h=2
     # uv position map: render position in uv space
     uv_position_map = mesh.render.render_colors(uv_coords, bfm.full_triangles, position, uv_h, uv_w, c=3)
     uv_position_map = uv_position_map.astype(np.float16)
-    
+
     # save files
     io.imsave('{}/{}'.format(save_folder, image_name), np.squeeze(cropped_image))
     np.save('{}/{}'.format(save_folder, image_name.replace('jpg', 'npy')), uv_position_map)
@@ -88,5 +88,5 @@ def run_posmap_300W_LP(bfm, uv_coords, image_path, mat_path, save_folder, uv_h=2
               (uv_position_map) / np.amax(uv_position_map))  # only for show #  / max(image_h, image_w)
 
     # --verify
-    #uv_texture_map_rec = cv2.remap(cropped_image, uv_position_map[:,:,:2].astype(np.float32), None, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT,borderValue=(0))
-    #io.imsave('{}/{}'.format(save_folder, image_name.replace('.jpg', '_tex.jpg')), np.squeeze(uv_texture_map_rec))
+    # uv_texture_map_rec = cv2.remap(cropped_image, uv_position_map[:,:,:2].astype(np.float32), None, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT,borderValue=(0))
+    # io.imsave('{}/{}'.format(save_folder, image_name.replace('.jpg', '_tex.jpg')), np.squeeze(uv_texture_map_rec))

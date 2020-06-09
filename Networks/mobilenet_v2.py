@@ -9,14 +9,13 @@
    (https://arxiv.org/abs/1801.04381)
 """
 
-import numpy as np
-from keras.models import Model
-from keras.layers import Input, Conv2D, Conv2DTranspose, GlobalAveragePooling2D, Dropout
-from keras.layers import Activation, BatchNormalization, Add, Reshape, DepthwiseConv2D
-from keras.utils.vis_utils import plot_model
+from contextlib import redirect_stdout
 
 from keras import backend as K
-from contextlib import redirect_stdout
+from keras.layers import Activation, BatchNormalization, Add, DepthwiseConv2D
+from keras.layers import Input, Conv2D, Conv2DTranspose
+from keras.models import Model
+
 
 def _make_divisible(v, divisor, min_value=None):
     if min_value is None:
@@ -123,28 +122,30 @@ def _inverted_residual_block(inputs, filters, kernel, t, alpha, strides, n):
 
     return x
 
+
 def decoder_network(se):
-    pd = Conv2DTranspose(512, 4, strides=1, padding='same', activation = K.relu)(se) # 8 x 8 x 512
-    pd = Conv2DTranspose(256, 4, strides=2, padding='same', activation = K.relu)(pd) # 16 x 16 x 256
-    pd = Conv2DTranspose(256, 4, strides=1, padding='same', activation = K.relu)(pd) # 16 x 16 x 256
-    pd = Conv2DTranspose(256, 4, strides=1, padding='same', activation = K.relu)(pd) # 16 x 16 x 256
-    pd = Conv2DTranspose(128, 4, strides=2, padding='same', activation = K.relu)(pd) # 32 x 32 x 128
-    pd = Conv2DTranspose(128, 4, strides=1, padding='same', activation = K.relu)(pd) # 32 x 32 x 128
-    pd = Conv2DTranspose(128, 4, strides=1, padding='same', activation = K.relu)(pd) # 32 x 32 x 128
-    pd = Conv2DTranspose(64, 4, strides=2, padding='same', activation = K.relu)(pd) # 64 x 64 x 64
-    pd = Conv2DTranspose(64, 4, strides=1, padding='same', activation = K.relu)(pd) # 64 x 64 x 64
-    pd = Conv2DTranspose(64, 4, strides=1, padding='same', activation = K.relu)(pd) # 64 x 64 x 64
+    pd = Conv2DTranspose(512, 4, strides=1, padding='same', activation=K.relu)(se)  # 8 x 8 x 512
+    pd = Conv2DTranspose(256, 4, strides=2, padding='same', activation=K.relu)(pd)  # 16 x 16 x 256
+    pd = Conv2DTranspose(256, 4, strides=1, padding='same', activation=K.relu)(pd)  # 16 x 16 x 256
+    pd = Conv2DTranspose(256, 4, strides=1, padding='same', activation=K.relu)(pd)  # 16 x 16 x 256
+    pd = Conv2DTranspose(128, 4, strides=2, padding='same', activation=K.relu)(pd)  # 32 x 32 x 128
+    pd = Conv2DTranspose(128, 4, strides=1, padding='same', activation=K.relu)(pd)  # 32 x 32 x 128
+    pd = Conv2DTranspose(128, 4, strides=1, padding='same', activation=K.relu)(pd)  # 32 x 32 x 128
+    pd = Conv2DTranspose(64, 4, strides=2, padding='same', activation=K.relu)(pd)  # 64 x 64 x 64
+    pd = Conv2DTranspose(64, 4, strides=1, padding='same', activation=K.relu)(pd)  # 64 x 64 x 64
+    pd = Conv2DTranspose(64, 4, strides=1, padding='same', activation=K.relu)(pd)  # 64 x 64 x 64
 
-    pd = Conv2DTranspose(32, 4, strides=2, padding='same', activation = K.relu)(pd) # 128 x 128 x 32
-    pd = Conv2DTranspose(32, 4, strides=1, padding='same', activation = K.relu)(pd) # 128 x 128 x 32
-    pd = Conv2DTranspose(16, 4, strides=2, padding='same', activation = K.relu)(pd) # 256 x 256 x 16
-    pd = Conv2DTranspose(16, 4, strides=1, padding='same', activation = K.relu)(pd) # 256 x 256 x 16
+    pd = Conv2DTranspose(32, 4, strides=2, padding='same', activation=K.relu)(pd)  # 128 x 128 x 32
+    pd = Conv2DTranspose(32, 4, strides=1, padding='same', activation=K.relu)(pd)  # 128 x 128 x 32
+    pd = Conv2DTranspose(16, 4, strides=2, padding='same', activation=K.relu)(pd)  # 256 x 256 x 16
+    pd = Conv2DTranspose(16, 4, strides=1, padding='same', activation=K.relu)(pd)  # 256 x 256 x 16
 
-    pd = Conv2DTranspose(3, 4, strides=1, padding='same', activation = K.relu)(pd) # 256 x 256 x 3
-    pd = Conv2DTranspose(3, 4, strides=1, padding='same', activation = K.relu)(pd) # 256 x 256 x 3
-    pos = Conv2DTranspose(3, 4, strides=1, padding='same', activation = K.sigmoid)(pd)
+    pd = Conv2DTranspose(3, 4, strides=1, padding='same', activation=K.relu)(pd)  # 256 x 256 x 3
+    pd = Conv2DTranspose(3, 4, strides=1, padding='same', activation=K.relu)(pd)  # 256 x 256 x 3
+    pos = Conv2DTranspose(3, 4, strides=1, padding='same', activation=K.sigmoid)(pd)
 
     return pos
+
 
 def MobileNetv2_PRN(input_shape, alpha=1.0):
     """MobileNetv2
