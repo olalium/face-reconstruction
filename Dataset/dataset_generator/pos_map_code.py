@@ -1,11 +1,7 @@
-import sys
-
 import numpy as np
 import scipy.io as sio
 import skimage.transform
 from skimage import io
-
-sys.path.append('../../face3d')
 from face3d import mesh
 
 '''

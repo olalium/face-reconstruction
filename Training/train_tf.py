@@ -1,16 +1,13 @@
 import argparse
 import math
 import os
-import sys
 from datetime import datetime
 from sys import stdout
 
 import numpy as np
 import tensorflow as tf
 from TrainData import TrainData
-
-sys.path.append('../')
-from networks.predictor import resfcn256_6
+from Networksetworks.predictor import resfcn256_6
 
 
 def main(args):

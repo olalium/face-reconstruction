@@ -1,5 +1,3 @@
-import sys
-
 import keras
 import numpy as np
 import tensorflow as tf
@@ -8,8 +6,7 @@ from keras.utils.generic_utils import CustomObjectScope
 
 from networks.resfcn256_6 import resfcn256_6
 
-sys.path.append('../')
-from networks import mobilenet_v2
+from Networks import mobilenet_v2
 
 
 class PosPrediction_6():

@@ -2,7 +2,7 @@ import glob
 import os
 
 import numpy as np
-from PRNetTwoFace.dataset_reader.Face import Face
+from Dataset.dataset_reader.Face import Face
 
 
 class DatasetReader(object):

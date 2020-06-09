@@ -1,14 +1,12 @@
 import argparse
 import glob
 import os
-import sys
 
 import numpy as np
 from scipy.spatial import distance
 from sklearn.neighbors import KDTree
 
-sys.path.append('../../')
-from PRNetTwoFace.icp.icp import icp
+from icp.icp import icp
 from utils.write import write_obj_with_colors
 
 

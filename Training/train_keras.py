@@ -1,7 +1,6 @@
 import argparse
 import math
 import os
-import sys
 from datetime import datetime
 from sys import stdout
 
@@ -12,10 +11,9 @@ from keras import optimizers
 from keras.backend.tensorflow_backend import set_session
 from keras.models import load_model
 
-sys.path.append('../')
-from networks import mobilenet_v2
-from networks.mobilenet_v2 import MobileNetv2_PRN
-from networks.resfcn256_keras import resfcn256_keras
+from Networks import mobilenet_v2
+from Networks.mobilenet_v2 import MobileNetv2_PRN
+from Networks.resfcn256_keras import resfcn256_keras
 
 
 def main(args):
