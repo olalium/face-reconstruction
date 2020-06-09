@@ -15,7 +15,7 @@
 * opencv2 
 
 #### Anaconda
-This conda environment was able to run demo.py on a windowds computer with GTX 1070 GPU on 09.06.2020.
+This conda environment was able to run demo.py on a Windows computer with GTX 1070 GPU on 09.06.2020.
  ```bash
 conda create --name face-recon python=3.6
 conda activate face-recon
