@@ -1,5 +1,14 @@
-# face-reconstruction
-3D face reconstruction from front and side images.
+# 3D face reconstruction from front and side images
+This code is the result of the work related to my master thesis. The goal of my thesis was to reconstruct 3D faces from front and side images. This was achieved through building on the works in [PRN](https://github.com/YadiraF/PRNet).
+
+The code contains:
+ * a demo for the proposed method, taking a frontal and side image and generating a 3D facial mesh (.obj)
+ * a new network which predicts position maps from 2 image inputs
+ * training code to train the new network
+ * evaluation code for use on the [MICC Florence dataset](https://www.micc.unifi.it/resources/datasets/florence-3d-faces/)
+ * code for reading and generating training data for our network from [300W-LP](http://www.cbsr.ia.ac.cn/users/xiangyuzhu/projects/3DDFA/main.htm)
+
+ 
 
 ## Getting Started
 
