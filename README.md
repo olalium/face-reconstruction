@@ -55,15 +55,12 @@ conda install -c anaconda keras-gpu
   ```
  4. Download trained model and shape predictor for keypoints (Not for long hopefully..)
  
-  Navigate to the ned-data folder
+  Navigate to the net-data folder
   ```bash
   cd Data/net-data
   ```
-  add these models:
-
-  Shape preditctor:  http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
-
-  Trained CNN:  https://drive.google.com/file/d/1VJkvxDNIoLUOK1eQ9jZHyu_Xi68xYCSV/view?usp=sharing
+  add the files from this folder:
+  https://drive.google.com/drive/folders/13Y8zCnvccDq7bwSuwGoQWawFxlD-tCMX?usp=sharing
 
  5. Run demo
   ```bash
